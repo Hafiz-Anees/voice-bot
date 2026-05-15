@@ -1,4 +1,6 @@
-audio-recorder-streamlit
 streamlit
+requests
+audio-recorder-streamlit
+pydantic
+pydantic-settings
 python-dotenv
-deepgram-sdk

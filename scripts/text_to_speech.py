@@ -36,7 +36,7 @@ def text_to_speech(text):
         model="aura-asteria-en"
     )
 
-    response = deepgram.speak.rest.v("1").stream(
+    response = deepgram.speak.v("1").stream(
 
         {"text": text},
 

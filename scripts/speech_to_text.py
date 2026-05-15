@@ -67,7 +67,7 @@ def transcribe_audio(audio_bytes):
         smart_format=True
     )
 
-    response = deepgram.listen.rest.v("1").transcribe_file(
+    response = deepgram.listen.prerecorded.v("1").transcribe_file(
 
         payload,
 
@@ -81,7 +81,7 @@ def transcribe_audio(audio_bytes):
         .alternatives[0]
         .transcript
     )
-    
+
     return transcript
 
 # =====================================

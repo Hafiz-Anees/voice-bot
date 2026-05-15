@@ -57,6 +57,12 @@ st.sidebar.write(
 st.sidebar.code(user_id)
 
 # =========================================
+# TEMP DEBUG (REMOVE LATER)
+# =========================================
+st.sidebar.write("Backend API")
+st.sidebar.code(API_URL)
+
+# =========================================
 # NEW SESSION BUTTON
 # =========================================
 if st.sidebar.button("Start New Session"):
@@ -124,16 +130,24 @@ if audio_bytes:
             "Generating response..."
         ):
 
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            payload = {
+
+                "user_id": user_id,
+
+                "query": query
+            }
+
             response = requests.post(
 
                 API_URL,
 
-                json={
+                json=payload,
 
-                    "user_id": user_id,
-
-                    "query": query
-                },
+                headers=headers,
 
                 stream=True,
 
@@ -148,6 +162,18 @@ if audio_bytes:
             st.error(
                 f"API Error: {response.status_code}"
             )
+
+            try:
+
+                st.write(
+                    response.json()
+                )
+
+            except:
+
+                st.write(
+                    response.text
+                )
 
             st.stop()
 
@@ -208,18 +234,27 @@ if audio_bytes:
             format="audio/mp3"
         )
 
-    except requests.exceptions.ConnectionError:
+    # =====================================
+    # CONNECTION ERROR
+    # =====================================
+    except requests.exceptions.ConnectionError as e:
 
         st.error(
-            "Could not connect to backend API."
+            f"Could not connect to backend API: {str(e)}"
         )
 
+    # =====================================
+    # TIMEOUT ERROR
+    # =====================================
     except requests.exceptions.Timeout:
 
         st.error(
             "Request timeout."
         )
 
+    # =====================================
+    # GENERAL ERROR
+    # =====================================
     except Exception as e:
 
         st.error(
